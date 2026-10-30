@@ -65,7 +65,7 @@ core.register_chatcommand("name_item", {
                     for i = 1, size do
                         local stack = inv:get_stack(list, i)
 
-                        if not stack:is_empty() then
+                        if not stack:is_empty() and stack:get_name() == item_name then
                             local meta = stack:get_meta()
                             meta:set_string("description", param)
                             inv:set_stack(list, i, stack)
@@ -113,7 +113,7 @@ core.register_chatcommand("remove_item_name", {
                     for i = 1, size do
                         local stack = inv:get_stack(list, i)
 
-                        if not stack:is_empty() then
+                        if not stack:is_empty() and stack:get_name() == item_name then
                             local meta = stack:get_meta()
                             if core.registered_nodes[item_name] then
                                 meta:set_string("description", "Unknown Node")
