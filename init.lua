@@ -136,3 +136,32 @@ core.register_chatcommand("remove_item_name", {
         end
     end,
 })
+
+core.register_on_joinplayer(function(player, last_login)
+    local inv = player:get_inventory()
+    local lists = {"main", "craft"}
+    for _, list in pairs(lists) do
+        local size = inv:get_size(list)
+        for i = 1, size do
+            local stack = inv:get_stack(list, i)
+
+            if not stack:is_empty() then
+                local meta = stack:get_meta()
+                local stackname = stack:get_name()
+                local newname = named_items[stackname]
+                
+                if newname == nil then 
+                    if core.registered_nodes[stackname] then
+                        meta:set_string("description", "Unknown Node")
+                    else
+                        meta:set_string("description", "Unknown Item")
+                    end
+                else
+                    meta:set_string("description", newname)
+                end
+
+                inv:set_stack(list, i, stack)
+            end
+        end
+    end
+end)
